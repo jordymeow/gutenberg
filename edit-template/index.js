@@ -19,6 +19,7 @@ import {
 	MultiBlocksSwitcher,
 	NavigableToolbar,
 	PostPreviewButton,
+	PostPublishButton,
 	PostTitle,
 } from '@wordpress/editor';
 import { __ } from '@wordpress/i18n';
@@ -30,7 +31,7 @@ import store from './store';
 import { toggleSidebar } from './store/actions';
 import { isSidebarOpened } from './store/selectors';
 
-export function initializeTemplateEditor( id, post, settings ) {
+export function initializeEditor( id, post, settings ) {
 	const target = document.getElementById( id );
 
 	const TemplateProvider = createProvider( 'edit-template' );
@@ -100,6 +101,7 @@ const Header = applyHeaderConnect( ( props ) => {
 			</NavigableToolbar>
 			<div className="edit-post-header__settings">
 				<TemplateSavedState />
+				<PostPublishButton />
 				<TemplatePreviewButton />
 				<IconButton
 					icon="admin-generic"
@@ -128,14 +130,3 @@ function TemplateSavedState() {
 function TemplatePreviewButton() {
 	return <PostPreviewButton />;
 }
-
-initializeTemplateEditor(
-	'editor',
-	{
-		content: { raw: '', rendered: '' },
-		title: { raw: '', rendered: '' },
-		type: 'wp-template',
-	}
-);
-
-//{id: 1176, date: "2018-01-02T16:02:57", date_gmt: "2018-01-02T16:02:57", guid: {…}, modified: "2018-01-20T12:35:59", …}author: 1categories: [1]comment_status: "closed"content: {raw: "<!-- wp:core/paragraph -->↵<p>Illo dolor reiciendi…que ea iusto qui.</p>↵<!-- /wp:core/paragraph -->", rendered: "↵<p>Illo dolor reiciendis <a href="http://localhos…sectetur commodi ducimus neque ea iusto qui.</p>↵", protected: false}date: "2018-01-02T16:02:57"date_gmt: "2018-01-02T16:02:57"excerpt: {raw: "", rendered: "<p>Illo dolor reiciendis quaerat voluptate laborio…io ab. Ipsa sit sed reprehenderit [&hellip;]</p>↵", protected: false}featured_media: 0format: "standard"guid: {rendered: "http://localhost:8000/?p=1176", raw: "http://localhost:8000/?p=1176"}id: 1176link: "http://localhost:8000/?p=1176"meta: []modified: "2018-01-20T12:35:59"modified_gmt: "2018-01-20T12:35:59"password: ""ping_status: "closed"revisions: {count: 149, last_id: 1507}slug: "texo"status: "draft"sticky: falsetags: []template: ""title: {raw: "Texō", rendered: "Texō"}type: "post"_links: {self: Array(1), collection: Array(1), about: Array(1), author: Array(1), replies: Array(1), …}__proto__: Object
