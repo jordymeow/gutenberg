@@ -57,13 +57,13 @@ const applyConnect = connect(
 );
 
 const Layout = applyConnect( () => (
-	<div className="editor-layout">
+	<div className="edit-post-layout">
 		{ /*<UnsavedChangesWarning /> */ }
 		<Header />
-		<div className="editor-layout__content" role="region" aria-label={ __( 'Editor content' ) } tabIndex="-1">
+		<div className="edit-post-layout__content" role="region" aria-label={ __( 'Editor content' ) } tabIndex="-1">
 			<EditorNotices />
-			<div className="editor-layout__editor">
-				<div className="editor-visual-editor">
+			<div className="edit-post-layout__editor">
+				<div className="edit-post-visual-editor">
 					<PostTitle />
 					<BlockList showContextualToolbar={ true } />
 				</div>
@@ -78,11 +78,11 @@ function Header() {
 		<div
 			role="region"
 			aria-label={ __( 'Editor toolbar' ) }
-			className="editor-header"
+			className="edit-post-header"
 			tabIndex="-1"
 		>
 			<NavigableToolbar
-				className="editor-header-toolbar"
+				className="edit-post-header-toolbar"
 				aria-label={ __( 'Editor Toolbar' ) }
 			>
 				<Inserter position="bottom right" />
@@ -90,7 +90,7 @@ function Header() {
 				<EditorHistoryRedo />
 				<MultiBlocksSwitcher />
 			</NavigableToolbar>
-			<div className="editor-header__settings">
+			<div className="edit-post-header__settings">
 				<TemplateSavedState />
 				<TemplatePreviewButton />
 				<PostPublishPanelToggle

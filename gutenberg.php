@@ -68,7 +68,7 @@ function gutenberg_menu() {
 		__( 'Page Editor', 'gutenberg' ),
 		__( 'Page Editor', 'gutenberg' ),
 		'edit_posts',
-		'customberg',
+		'edit-template',
 		'the_customberg_project'
 	);
 
@@ -90,21 +90,21 @@ add_action( 'admin_menu', 'gutenberg_menu' );
 
 function customberg_register_scripts() {
 	wp_register_script(
-		'customberg',
-		gutenberg_url( 'customberg/build/index.js' ),
+		'wp-edit-template',
+		gutenberg_url( 'edit-template/build/index.js' ),
 		array( 'wp-editor' ),
-		filemtime( gutenberg_dir_path() . 'customberg/build/index.js' ),
+		filemtime( gutenberg_dir_path() . 'edit-template/build/index.js' ),
 		true
 	);
 }
 add_action( 'admin_enqueue_scripts', 'customberg_register_scripts' );
 
 function the_customberg_project() {
-	wp_enqueue_script( 'customberg' );
+	wp_enqueue_script( 'wp-edit-template' );
 	gutenberg_extend_wp_api_backbone_client();
-	wp_enqueue_style( 'wp-editor' );
+	wp_enqueue_style( 'wp-edit-post' );
 	?>
-	<div class="gutenberg customberg">
+	<div class="gutenberg edit-template">
 		<div id="editor" class="gutenberg__editor"></div>
 	</div>
 	<?php
