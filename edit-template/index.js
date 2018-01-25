@@ -7,8 +7,9 @@ import { connect, createProvider } from 'react-redux';
  * WordPress dependencies
  */
 import { render } from '@wordpress/element';
-import { IconButton, Popover, PanelBody, Panel } from '@wordpress/components';
+import { IconButton, Popover, Panel } from '@wordpress/components';
 import {
+	BlockInspector,
 	BlockList,
 	EditorHistoryRedo,
 	EditorHistoryUndo,
@@ -17,9 +18,8 @@ import {
 	Inserter,
 	MultiBlocksSwitcher,
 	NavigableToolbar,
-	PostTitle,
 	PostPreviewButton,
-	BlockInspector,
+	PostTitle,
 } from '@wordpress/editor';
 import { __ } from '@wordpress/i18n';
 
@@ -74,10 +74,11 @@ const Layout = applyLayoutConnect( ( { showSidebar } ) => (
 ) );
 
 const applyHeaderConnect = connect(
-	undefined,
+	( state ) => ( {
+		isSidebarOpened: isSidebarOpened( state ),
+	} ),
 	{ toggleSidebar },
 	undefined,
-	// Temporary:
 	{ storeKey: 'edit-template' }
 );
 const Header = applyHeaderConnect( ( props ) => {
@@ -103,6 +104,7 @@ const Header = applyHeaderConnect( ( props ) => {
 				<IconButton
 					icon="admin-generic"
 					label={ __( 'Settings' ) }
+					isToggled={ props.isSidebarOpened }
 					onClick={ props.toggleSidebar }
 				/>
 			</div>
