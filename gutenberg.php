@@ -128,20 +128,6 @@ JS;
 	<?php
 }
 
-function customberg_register_post_types() {
-	register_post_type( 'wp-template', array(
-		'labels' => array(
-			'name' => 'Templates',
-			'singular_name' => 'Template',
-		),
-		'public' => true,
-		'capability_type' => 'post',
-		'show_in_rest' => true,
-		'show_ui' => true,
-	) );
-}
-add_action( 'init', 'customberg_register_post_types' );
-
 /**
  * Display a version notice and deactivate the Gutenberg plugin.
  *
@@ -223,7 +209,7 @@ function gutenberg_init( $return, $post ) {
 	add_filter( 'screen_options_show_screen', '__return_false' );
 	add_filter( 'admin_body_class', 'gutenberg_add_admin_body_class' );
 
-	if ( 'wp-template' === get_post_type( $post ) ) {
+	if ( 'wp_template' === get_post_type( $post ) ) {
 		require_once ABSPATH . 'wp-admin/admin-header.php';
 		the_customberg_project();
 	} else {

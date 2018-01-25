@@ -25,7 +25,7 @@ function gutenberg_trick_plugins_into_registering_meta_boxes() {
 		$post_type = get_post_type( absint( $_REQUEST[ 'post' ] ) );
 	}
 
-	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) && ! isset( $_REQUEST['classic-editor'] ) && 'wp-template' !== $post_type ) {
+	if ( in_array( $pagenow, array( 'post.php', 'post-new.php' ), true ) && ! isset( $_REQUEST['classic-editor'] ) && 'wp_template' !== $post_type ) {
 		// As early as possible, but after any plugins ( ACF ) that adds meta boxes.
 		add_action( 'admin_head', 'gutenberg_collect_meta_box_data', 99 );
 	}
