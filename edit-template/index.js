@@ -7,7 +7,7 @@ import { connect, createProvider } from 'react-redux';
  * WordPress dependencies
  */
 import { render } from '@wordpress/element';
-import { IconButton, Popover } from '@wordpress/components';
+import { IconButton, Popover, PanelBody, Panel } from '@wordpress/components';
 import {
 	BlockList,
 	EditorHistoryRedo,
@@ -19,22 +19,21 @@ import {
 	NavigableToolbar,
 	PostTitle,
 	PostPreviewButton,
-	PostSavedState,
-	PostPublishPanelToggle,
+	BlockInspector,
 } from '@wordpress/editor';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import createReduxStore from './store';
+import store from './store';
+import { toggleSidebar } from './store/actions';
+import { isSidebarOpened } from './store/selectors';
 
-export function createTemplateEditorInstance( id, post, settings ) {
+export function initializeTemplateEditor( id, post, settings ) {
 	const target = document.getElementById( id );
-	const store = createReduxStore();
 
-	// FIXME Should just be `ReduxProvider`
-	const TemplateProvider = createProvider( 'templateEditorStore' );
+	const TemplateProvider = createProvider( 'edit-template' );
 
 	render(
 		<EditorProvider settings={ settings } post={ post }>
@@ -46,17 +45,17 @@ export function createTemplateEditorInstance( id, post, settings ) {
 	);
 }
 
-const applyConnect = connect(
+const applyLayoutConnect = connect(
 	( state ) => ( {
-		// …
+		showSidebar: isSidebarOpened( state ),
 	} ),
 	undefined,
 	undefined,
 	// Temporary:
-	{ storeKey: 'templateEditorStore' }
+	{ storeKey: 'edit-template' }
 );
 
-const Layout = applyConnect( () => (
+const Layout = applyLayoutConnect( ( { showSidebar } ) => (
 	<div className="edit-post-layout">
 		{ /*<UnsavedChangesWarning /> */ }
 		<Header />
@@ -69,11 +68,19 @@ const Layout = applyConnect( () => (
 				</div>
 			</div>
 		</div>
+		{ showSidebar && <Sidebar /> }
 		<Popover.Slot />
 	</div>
 ) );
 
-function Header() {
+const applyHeaderConnect = connect(
+	undefined,
+	{ toggleSidebar },
+	undefined,
+	// Temporary:
+	{ storeKey: 'edit-template' }
+);
+const Header = applyHeaderConnect( ( props ) => {
 	return (
 		<div
 			role="region"
@@ -93,13 +100,22 @@ function Header() {
 			<div className="edit-post-header__settings">
 				<TemplateSavedState />
 				<TemplatePreviewButton />
-				<PostPublishPanelToggle
-				/>
 				<IconButton
 					icon="admin-generic"
 					label={ __( 'Settings' ) }
+					onClick={ props.toggleSidebar }
 				/>
 			</div>
+		</div>
+	);
+} );
+
+function Sidebar() {
+	return (
+		<div className="edit-post-sidebar">
+			<Panel>
+				<BlockInspector />
+			</Panel>
 		</div>
 	);
 }
@@ -111,7 +127,7 @@ function TemplatePreviewButton() {
 	return <PostPreviewButton />;
 }
 
-createTemplateEditorInstance(
+initializeTemplateEditor(
 	'editor',
 	{
 		content: { raw: '', rendered: '' },
