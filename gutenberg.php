@@ -63,6 +63,15 @@ function gutenberg_menu() {
 		'gutenberg'
 	);
 
+	add_submenu_page(
+		'themes.php',
+		__( 'Page Editor', 'gutenberg' ),
+		__( 'Page Editor', 'gutenberg' ),
+		'edit_posts',
+		'customberg',
+		'the_customberg_project'
+	);
+
 	if ( current_user_can( 'edit_posts' ) ) {
 		$submenu['gutenberg'][] = array(
 			__( 'Feedback', 'gutenberg' ),
@@ -78,6 +87,42 @@ function gutenberg_menu() {
 	}
 }
 add_action( 'admin_menu', 'gutenberg_menu' );
+
+function customberg_register_scripts() {
+	wp_register_script(
+		'customberg',
+		gutenberg_url( 'customberg/build/index.js' ),
+		array( 'wp-editor' ),
+		filemtime( gutenberg_dir_path() . 'customberg/build/index.js' ),
+		true
+	);
+}
+add_action( 'admin_enqueue_scripts', 'customberg_register_scripts' );
+
+function the_customberg_project() {
+	wp_enqueue_script( 'customberg' );
+	gutenberg_extend_wp_api_backbone_client();
+	wp_enqueue_style( 'wp-editor' );
+	?>
+	<div class="gutenberg customberg">
+		<div id="editor" class="gutenberg__editor"></div>
+	</div>
+	<?php
+}
+
+function customberg_register_post_types() {
+	register_post_type( 'wp-template', array(
+		'labels' => array(
+			'name' => 'Templates',
+			'singular_name' => 'Template',
+		),
+		'public' => false,
+		'capability_type' => 'post',
+		'show_in_rest' => true,
+		'show_ui' => true,
+	) );
+}
+add_action( 'init', 'customberg_register_post_types' );
 
 /**
  * Display a version notice and deactivate the Gutenberg plugin.

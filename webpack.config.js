@@ -47,6 +47,7 @@ const extractConfig = {
 const entryPointNames = [
 	'blocks',
 	'components',
+	'customberg',
 	'date',
 	'editor',
 	'element',
