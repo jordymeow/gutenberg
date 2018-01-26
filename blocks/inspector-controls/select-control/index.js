@@ -34,6 +34,7 @@ function SelectControl( { label, help, instanceId, onChange, options = [], ...pr
 					<option
 						key={ option.value }
 						value={ option.value }
+						{ !! option.disabled ? ' disabled' : '' }
 					>
 						{ option.label }
 					</option>
